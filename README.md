@@ -1,94 +1,267 @@
-# Gesture AI TF-C — bản riêng để đưa lên GitHub mới
 
-Bản sao từ `vuvandat109/Gesture-AI-Web`, nhánh `main`, commit `50b2db70d5d571b8f90338e83f174599826d630f`. Giữ nguyên giao diện, CSS/JS, hình minh họa, đăng ký/đăng nhập, CSRF, SQLite/PostgreSQL và định dạng API. Thay mô hình đang phục vụ bằng **TF-C Time-Frequency Consistency, 6 kênh**.
+# Gesture AI TF-C — Hand Gesture Recognition
 
-**Đã kèm model huấn luyện. Không cần train lại để chạy web.** Lần chạy này hoàn thành 40 epoch pre-training + 40 epoch fine-tuning: accuracy test **39.62%**, macro-F1 **39.75%**, checkpoint epoch 34. PCA cũ đạt 49,23% trên bộ dữ liệu hiện có; TF-C lần này chưa vượt baseline. Kết quả của lần huấn luyện mới nằm tại [models/training_report.json](models/training_report.json). Chi tiết phương pháp: [docs/TFC_RETRAINING.md](docs/TFC_RETRAINING.md).
+A web-based hand gesture recognition system powered by **TF-C (Time-Frequency Consistency)** and motion sensor data collected using Sensor Logger.
 
-## 1. Chạy trên Windows
+The application recognizes five hand gestures using accelerometer and gyroscope measurements. It provides user authentication, sensor data upload, gesture classification, and prediction confidence scores.
 
-Cài Python **3.12 (64-bit)** và Git. Giải nén bản đầy đủ, mở PowerShell tại thư mục có `app.py`:
+This project is developed from [Gesture-AI-Web](https://github.com/vuvandat109/Gesture-AI-Web). The original user interface, authentication system, database integration, and API structure are preserved, while the previous PCA-based classifier is replaced with a trained neural TF-C model.
+
+**The trained TF-C model is included in this repository. Retraining is not required to run the application.**
+
+## Features
+
+- Recognition of five gestures: **Up, Down, Left, Right, and Rotate**.
+- Six-channel motion sensor processing.
+- CSV, TXT, and Sensor Logger ZIP file uploads.
+- Gesture predictions with class probabilities.
+- User registration, login, and logout.
+- Password hashing and CSRF protection.
+- SQLite and PostgreSQL database support.
+- Flask-based prediction API.
+- Support for deployment on Render.
+
+## Model Architecture
+
+The system uses **TF-C (Time-Frequency Consistency)**, a self-supervised contrastive learning method designed to learn meaningful representations from time-series data.
+
+TF-C processes sensor signals in both the time and frequency domains before supervised fine-tuning for gesture classification.
+
+### Processing Pipeline
+
+Sensor Data → Preprocessing → Time/Frequency Views → TF-C Pre-training → Fine-tuning → Gesture Classification → Prediction
+
+### Model Configuration
+
+| Component | Configuration |
+| --- | --- |
+| Input shape | 178 time steps × 6 channels |
+| Sensor channels | acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z |
+| Gesture classes | 5 |
+| Total dataset | 26,000 samples |
+| Pre-training dataset | 20,800 unlabeled samples |
+| Fine-tuning dataset | 5,200 labeled samples |
+| Training split | 3,120 samples |
+| Validation split | 1,040 samples |
+| Test split | 1,040 samples |
+| Pre-training epochs | 40 |
+| Fine-tuning epochs | 40 |
+| Framework | PyTorch |
+
+### Experimental Results
+
+| Metric | Result |
+| --- | ---: |
+| Test Accuracy | **39.62%** |
+| Test Macro-F1 | **39.75%** |
+| Selected Checkpoint | Epoch 34 |
+| Test Samples | 1,040 |
+| Previous PCA Baseline Accuracy | 49.23% |
+
+The TF-C training pipeline was completed successfully. However, this experiment did not outperform the previous PCA baseline.
+
+The dataset contains augmented and synthetic-derived samples, and original participant/session identifiers are incomplete. Therefore, the reported results should not be interpreted as independent-user evaluation performance.
+
+Detailed training results are available in:
+
+- [Training Report](models/training_report.json)
+- [TF-C Training Documentation](docs/TFC_RETRAINING.md)
+- [Release Validation Report](docs/RELEASE_VALIDATION.json)
+
+## Installation
+
+### Requirements
+
+- Python 3.12 (64-bit)
+- Git
+- Python dependencies listed in `requirements.txt`
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/vuvandat109/Gesture-AI-TFC.git
+cd Gesture-AI-TFC
+```
+
+### Windows Installation
+
+Create a virtual environment:
 
 ```powershell
 py -3.12 -m venv .venv
+```
+
+Install dependencies:
+
+```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Verify the trained model:
+
+```powershell
 .\.venv\Scripts\python.exe scripts/verify_tfc_release.py
 .\.venv\Scripts\python.exe scripts/verify_preserved_assets.py
+```
+
+Start the application:
+
+```powershell
 .\.venv\Scripts\python.exe app.py
 ```
 
-Mở http://127.0.0.1:5000. Đăng ký tài khoản, đăng nhập và tải một cử chỉ bằng CSV/TXT 6 kênh hoặc ZIP Sensor Logger có `Accelerometer.csv` + `Gyroscope.csv`. Tệp phải có 20–10.000 dòng; giới hạn tải lên 5 MB. Bộ dữ liệu huấn luyện 449 MB không phải tệp đầu vào để tải vào ô dự đoán.
+### macOS / Linux Installation
 
-Chạy trên macOS/Linux: dùng `python3 -m venv .venv`, `.venv/bin/python -m pip install -r requirements.txt`, rồi `.venv/bin/python app.py`.
-
-## 2. Đưa toàn bộ mã và model lên repo MỚI
-
-Trên GitHub, tạo repo trống, ví dụ **Gesture-AI-TFC**. Không chọn tạo sẵn README/license/gitignore. Thư mục giải nén không chứa `.git` hay remote của repo cũ.
-
-```powershell
-git init -b main
-git add .
-git commit -m "Create Gesture AI TF-C with trained model"
-git remote add origin https://github.com/vuvandat109/Gesture-AI-TFC.git
-git push -u origin main
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python scripts/verify_tfc_release.py
+.venv/bin/python app.py
 ```
 
-Thay URL bằng repo mới thực tế. Nếu Git hỏi danh tính, đặt `git config user.name "TEN_CUA_BAN"` và `git config user.email "EMAIL_GITHUB_CUA_BAN"`, rồi chạy lại commit/push. Đăng nhập GitHub khi Git yêu cầu.
+Open the application in your browser:
 
-Hoặc, sau khi kích hoạt môi trường Python, dùng script kiểm tra model và đẩy lên repo trống:
+http://127.0.0.1:5000
 
-```powershell
-.\.venv\Scripts\Activate.ps1
-.\push_new_repo.ps1 -RepositoryUrl https://github.com/vuvandat109/Gesture-AI-TFC.git
-```
+## How to Use
 
-Chỉ chạy script này trên thư mục vừa giải nén, chưa `git init`. Nếu PowerShell không cho chạy script, dùng các lệnh Git thủ công phía trên.
+1. Open the application and register an account.
+2. Log in using your registered credentials.
+3. Upload a compatible sensor data file.
+4. Run the gesture prediction.
+5. View the predicted gesture and confidence scores.
 
-**Dữ liệu gốc:** bản đầy đủ chứa `datasets/Sensor_logger.zip`, giữ nguyên byte và được kiểm tra SHA-256. Thư mục `datasets/` được bỏ qua khi push vì ZIP gốc lớn hơn giới hạn 100 MB mỗi tệp của GitHub. Mã nguồn, trọng số và mọi báo cáo huấn luyện vẫn được đẩy bình thường. Giữ ZIP ở máy để train lại; nếu cần lưu ZIP cùng repo, cấu hình Git LFS cho `datasets/*.zip` và kiểm tra dung lượng tài khoản trước khi bỏ quy tắc ignore. Bản mã + model gọn không chứa ZIP này; chép lại bản `Sensor logger.zip` đã gửi, đổi tên thành `datasets/Sensor_logger.zip` để huấn luyện lại.
+### Supported Input Formats
 
-## 3. Triển khai trên Render
+The application supports:
 
-Tạo Web Service mới từ repo mới. Dùng Python 3.12; Build Command:
+- **CSV/TXT:** Six-channel accelerometer and gyroscope measurements.
+- **ZIP:** Sensor Logger exports containing `Accelerometer.csv` and `Gyroscope.csv`.
+
+Input requirements:
+
+- Minimum: 20 rows.
+- Maximum: 10,000 rows.
+- Maximum upload size: 5 MB.
+- Six motion sensor channels are required.
+
+The application preprocesses the input into a 178-step window before inference.
+
+The complete training dataset is not intended to be uploaded through the prediction interface.
+
+## Deployment on Render
+
+The application can be deployed as a Python web service on Render.
+
+### Build Command
 
 ```bash
 pip install -r requirements.txt && python scripts/verify_tfc_release.py
 ```
 
-Start Command:
+### Start Command
 
 ```bash
 python -m gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 120
 ```
 
-Đặt biến môi trường:
+### Environment Variables
 
-| Biến | Giá trị |
-|---|---|
-| `SECRET_KEY` | Chuỗi ngẫu nhiên dài, ổn định giữa các lần deploy |
-| `COOKIE_SECURE` | `1` khi dùng HTTPS |
-| `DATABASE_URL` | PostgreSQL URL nếu muốn lưu tài khoản lâu dài |
+| Variable | Description |
+| --- | --- |
+| `SECRET_KEY` | Secure application secret key |
+| `COOKIE_SECURE` | Set to `1` when using HTTPS |
+| `DATABASE_URL` | PostgreSQL database connection URL |
 
-Tạo `SECRET_KEY` bằng `python -c "import secrets; print(secrets.token_hex(32))"`. Không đưa khóa hay URL database thật vào Git. Đọc [docs/ACCOUNT_STORAGE.md](docs/ACCOUNT_STORAGE.md) để chuyển dữ liệu tài khoản hiện có. Repo cũ không chứa database tài khoản trên dịch vụ đang chạy; không thể sao chép các tài khoản đó chỉ bằng clone GitHub.
+Generate a secure secret key using:
 
-Kiểm tra `/api/health`: `model_ready` phải là `true`, `model` phải chứa `TF-C`. Không cần dữ liệu train trên máy chủ web. PyTorch cần tài nguyên khác mô hình PCA; chọn cấu hình dịch vụ theo mức RAM thực tế trong log. Chưa có kết quả xác minh trên dịch vụ Render mới trong bản bàn giao này.
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
 
-## 4. Model và train lại
+Do not commit secret keys, database credentials, or production configuration files to GitHub.
 
-- Mô hình phục vụ: `models/gesture_real_v1.joblib`, chứa **TFCInference**, không còn là PCA/Logistic Regression.
-- Trọng số: `models/tfc_pretrained.pt` và `models/tfc_finetuned.pt`.
-- Báo cáo, phép chia và dự đoán test: `models/*.json`, `models/evaluation_split.csv`, `models/test_predictions.npz`.
-- Bản PCA gốc giữ nguyên trong `models/baseline_pca/` để đối chiếu. Web không tự chuyển về mô hình này.
-- Các script huấn luyện PCA/UWave cũ vẫn giữ để tham khảo. Chúng có thể ghi đè model mặc định; không dùng nếu muốn tiếp tục phục vụ TF-C.
+For persistent account storage and account migration, see [Account Storage Documentation](docs/ACCOUNT_STORAGE.md).
 
-```powershell
+### Deployment Verification
+
+After deployment, access:
+
+```text
+/api/health
+```
+
+Verify that:
+
+- `model_ready` is `true`.
+- The model name contains `TF-C`.
+- The prediction API responds correctly.
+
+**Note:** The trained model is available in the repository, but successful deployment on a new Render service has not yet been independently verified.
+
+## Model Training
+
+The TF-C model uses two training stages.
+
+### Stage 1: Self-Supervised Pre-training
+
+The model learns time-domain and frequency-domain representations from unlabeled sensor data through contrastive learning.
+
+- Dataset: 20,800 unlabeled samples.
+- Epochs: 40.
+- Objective: TF-C contrastive learning.
+
+### Stage 2: Supervised Fine-tuning
+
+The pretrained model is fine-tuned using labeled gesture data and cross-entropy loss.
+
+- Labeled dataset: 5,200 samples.
+- Training samples: 3,120.
+- Validation samples: 1,040.
+- Test samples: 1,040.
+- Epochs: 40.
+
+### Retraining Command
+
+Place the original dataset at:
+
+```text
+datasets/Sensor_logger.zip
+```
+
+Then run:
+
+```bash
 python train_tfc.py --data datasets/Sensor_logger.zip --pre-epochs 40 --fine-epochs 40 --threads 4
+```
+
+Verify the generated model:
+
+```bash
 python scripts/verify_tfc_release.py
 ```
 
-TF-C được điều chỉnh cho 6 kênh Sensor Logger. Không bảo đảm mô hình mới sẽ chính xác hơn PCA; so sánh chỉ số thực tế ở `models/training_report.json` với `models/baseline_pca/training_report.json`. Dữ liệu có augmentation và thiếu ID session gốc nên kết quả không phải đánh giá độc lập trên người dùng mới.
+The original training archive is not included in standard Git commits because of its size. The repository contains the trained model and checkpoints.
 
-## 5. Kiểm thử
+## Model Files
 
-```powershell
+| File | Description |
+| --- | --- |
+| `models/gesture_real_v1.joblib` | Trained TF-C inference model |
+| `models/tfc_pretrained.pt` | Pre-training checkpoint |
+| `models/tfc_finetuned.pt` | Fine-tuning checkpoint |
+| `models/training_history.json` | Training logs |
+| `models/training_report.json` | Training and evaluation metrics |
+| `models/classification_report.json` | Classification report |
+| `models/evaluation_split.csv` | Dataset split information |
+
+The previous PCA model is preserved in `models/baseline_pca/` for comparison.
+
+## Testing
+
+Run the following commands to verify the system:
+
+```bash
 python -m unittest test_sensor_model.py
 python tests/test_application.py
 python tests/test_tfc.py
@@ -98,4 +271,63 @@ python scripts/verify_tfc_release.py
 python scripts/verify_preserved_assets.py
 ```
 
-CI giữ kiểm thử PostgreSQL từ repo cũ và thêm kiểm tra trọng số TF-C. Báo cáo lần kiểm tra bàn giao: `docs/RELEASE_VALIDATION.json`. Các tài liệu trong `docs/testing/` là lịch sử từ repo cũ, không phải số liệu của lần huấn luyện TF-C này. Tài liệu README cũ giữ tại `docs/README_PCA_ORIGINAL.md`.
+The tests cover:
+
+- Sensor data preprocessing.
+- TF-C model integrity.
+- Model serialization and inference.
+- API functionality.
+- User authentication.
+- Preserved interface assets.
+- Checkpoint consistency.
+
+Recorded validation results can be found in [Release Validation](docs/RELEASE_VALIDATION.json).
+
+## Project Structure
+
+```text
+Gesture-AI-TFC/
+├── app.py
+├── tfc_model.py
+├── train_tfc.py
+├── sensor_input.py
+├── models/
+│   ├── gesture_real_v1.joblib
+│   ├── tfc_pretrained.pt
+│   ├── tfc_finetuned.pt
+│   ├── training_history.json
+│   ├── training_report.json
+│   └── baseline_pca/
+├── templates/
+├── static/
+├── scripts/
+├── tests/
+├── docs/
+└── requirements.txt
+```
+
+## Technologies Used
+
+| Technology | Purpose |
+| --- | --- |
+| Python | Main programming language |
+| PyTorch | Deep learning and TF-C |
+| NumPy | Numerical computation |
+| Pandas | Data processing |
+| Flask | Backend and REST API |
+| HTML, CSS, JavaScript | Frontend |
+| SQLite / PostgreSQL | User account storage |
+| GitHub | Source code management |
+| Render | Web deployment |
+
+## References
+
+1. Zhang, X., Zhao, Z., Tsiligkaridis, T., & Zitnik, M. (2022). *Self-Supervised Contrastive Pre-Training For Time Series via Time-Frequency Consistency*. [arXiv:2206.08496](https://arxiv.org/abs/2206.08496).
+2. [TF-C Official Implementation](https://github.com/mims-harvard/TFC-pretraining).
+3. [Gesture-AI-Web Original Repository](https://github.com/vuvandat109/Gesture-AI-Web).
+
+---
+
+**Project:** Gesture AI TF-C — Hand Gesture Recognition
+
+**Repository:** https://github.com/vuvandat109/Gesture-AI-TFC
