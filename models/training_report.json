@@ -1,0 +1,108 @@
+{
+  "source_filename": "Sensor logger.zip",
+  "data_sha256": "451c770fedf11b305a8d03ab5cb79140671d23686bcce6242443f0540918e643",
+  "pretraining_samples": 20800,
+  "labeled_samples": 5200,
+  "train_samples": 3120,
+  "validation_samples": 1040,
+  "test_samples": 1040,
+  "array_shape": [
+    178,
+    6
+  ],
+  "csv_npy_spotchecks": 24,
+  "max_spotcheck_error": 2.3612225952263088e-07,
+  "exact_pretrain_heldout_duplicates": 0,
+  "known_ancestor_groups_disjoint": true,
+  "source_limitation": "Augmented/synthetic-derived windows. Original recording/session IDs absent; unknown shared source ancestry cannot be ruled out. Not an independent-person/session evaluation.",
+  "kaggle_url": "https://www.kaggle.com/datasets/vuvandat000099/sensor-logger-dataset",
+  "source_selection": "Original user-provided Sensor logger.zip, retained unchanged.",
+  "model_name": "TF-C Time-Frequency Consistency (6-channel adaptation)",
+  "feature_version": "tfc6_v1",
+  "trained_from": "Sensor Logger: 26,000 windows; neural TF-C pretraining + full-network fine-tuning",
+  "method": "Paper Eq. 1-4 NT-Xent + consistency loss; CE supervised fine-tuning of both encoders/projectors and MLP. No PCA/LogisticRegression/DINOv3.",
+  "paper": "Zhang et al., NeurIPS 2022, arXiv:2206.08496",
+  "official_code_commit": "5096675826e9ef234a9b01cc63d484c66cb0441bc0",
+  "pretraining_epochs": 40,
+  "fine_tuning_epochs": 40,
+  "selected_epoch": 34,
+  "validation_macro_f1": 0.431586892145036,
+  "heldout_test_accuracy": 0.39615384615384613,
+  "heldout_test_macro_f1": 0.39749943862317666,
+  "test_confusion_matrix": [
+    [
+      101,
+      45,
+      30,
+      23,
+      9
+    ],
+    [
+      33,
+      82,
+      47,
+      40,
+      6
+    ],
+    [
+      37,
+      57,
+      77,
+      31,
+      6
+    ],
+    [
+      29,
+      43,
+      34,
+      93,
+      9
+    ],
+    [
+      27,
+      45,
+      42,
+      35,
+      59
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "up",
+    "down",
+    "left",
+    "right",
+    "circle"
+  ],
+  "evaluation": "Augmented/synthetic-derived windows. Original recording/session IDs absent; unknown shared source ancestry cannot be ruled out. Not an independent-person/session evaluation.",
+  "seed": 42,
+  "batch_size": 128,
+  "lambda": 0.2,
+  "temperature": 0.2,
+  "margin": 1.0,
+  "learning_rate": 0.0003,
+  "device": "cpu",
+  "torch_version": "2.6.0+cpu",
+  "elapsed_seconds": 1329.0712730884552,
+  "weight_update_proof": {
+    "pretraining": {
+      "changed_tensors": 66,
+      "total_tensors": 66,
+      "l2_delta": 18443.498046875
+    },
+    "finetuning_encoder": {
+      "changed_tensors": 66,
+      "total_tensors": 66,
+      "l2_delta": 1219.4427490234375
+    }
+  },
+  "pretrained_sha256": "8c677a0a21a69cb5bc8988e39cd2ea092a3da557569a15f026dadec834472144",
+  "finetuned_sha256": "85059285a6b343d800db558710ccf081d59ec02ccb559b5d08a09f97d6df49a3",
+  "adaptations": [
+    "All six channels retained; Transformer batch_first=True and flatten 6*178 projector input.",
+    "Paper Eq3/Eq4 used, unlike upstream trainer that computes loss_c but optimizes l_TF.",
+    "Fresh augmentations each batch; per-window z-score; 10% frequency perturbation, alpha=.5.",
+    "Temporal bank: jitter sigma=.2, scale SD=.1, circular shifts +/-18, four-segment permutation.",
+    "40/40 epochs from upstream default; batch128; full labeled train split, no few-shot benchmark claim.",
+    "No test checkpoint selection or upstream cross-batch attention."
+  ]
+}

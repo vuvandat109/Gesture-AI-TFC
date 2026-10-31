@@ -1,0 +1,57 @@
+{
+  "source_repository": "https://github.com/vuvandat109/Gesture-AI-Web",
+  "source_branch": "main",
+  "source_commit": "50b2db70d5d571b8f90338e83f174599826d630f",
+  "tfc_code_branch": "feat/tfc-paper-retrain-26000",
+  "tfc_code_commit": "131638f179a7d33bfef1a8d3318992311dfa0984",
+  "dataset_sha256": "451c770fedf11b305a8d03ab5cb79140671d23686bcce6242443f0540918e643",
+  "preserved_files": {
+    ".env.example": "a9f7b7d8046301a8966604e8e19cc5aeb48db2acf283d7a8853f06b26ffbd372",
+    "Procfile": "fcabfdb95b852599de28a9f3ff0ab1891ea5ab9274f0e2ddb34704061cf97f2d",
+    "account_store.py": "03b64bd2e8bb7a6dcbc1e5159a99a0a85f2ee10776d2879606c8d427e1390b28",
+    "check_sensor_logger.py": "fedf20c21382345c0034ff3cd8ebce3d26058e579fdee6b72da3807f6099bf19",
+    "docs/ACCOUNT_STORAGE.md": "cd38497f5597c38568f2f4f41229e68872d09249963ab677ba9ebaefcb629fec",
+    "docs/testing/REPORT.md": "e93aea43a35ad068593065797f5226facc3801bd4511787089882d1bf8eba0b3",
+    "docs/testing/acceptance_results.json": "861d2c82b6b65865445c38ff1b12df16fd41c980a8334f9394e2ed3053677452",
+    "docs/testing/functional_results.json": "c9db3fee8769595ccb164e1510f78dda1e3f1faad20228e9dd36be6630104f37",
+    "docs/testing/load_requests.json": "b042b8535c9d52a41a1808a6c706aeb7cfb85e84e5d9aa1c249a1ed210855504",
+    "docs/testing/load_results.json": "ef7609547f494c73432cf35602a5bdad2b5957c9e22cd07fde3a8eea8a9d884a",
+    "export_real_test_examples.py": "5fc35382259d35f35591990bb6639c98210d90bebbadd0b0dbe8f4ce670b2191",
+    "ml.py": "defe79315235a6fa1be3881edf6e6fa2fa990a7464b2cef9d859377b42014326",
+    "scripts/load_test.py": "4ecf12dadec98771ebca871e738094d9edc92fe8146eefa5a94100a6faa70a6f",
+    "scripts/migrate_accounts.py": "30bddcdcad54b05e79a12440e4d208f112f41c8ce366b41712ab4e4f8a89ffb0",
+    "sensor_input.py": "dc6e8d4e4f7c177b7fb33a3f33c1c3f32c6b64fc5f02107cbdf7ac56f7719f6b",
+    "sensor_model.py": "a1e911eb76c433bc2dc81672895fcd578f63fe8db2b6ccdff7ce1d7c4df6f0de",
+    "static/app.js": "d5ab38434ef45a37904fa0cf7ac3a3bac092de7777eb10c0a161242c91cb57e7",
+    "static/gestures/circle.svg": "68c66ff005db7d18772c2d5573a34019fc97a363c53703f8237674908e5b52f4",
+    "static/gestures/down.svg": "51e3ad968087c3313066f599263189749bf8f7e31feeb13100f1318ae69aaccd",
+    "static/gestures/left.svg": "e807994ca0d502a83e2bb419bacf3d440c8de8a43c657224505c54521205e559",
+    "static/gestures/none.svg": "d04cce45e69f9e2e0b0fb511fb7514f74e2fcf51a7f9a458293e17ab5044d9a2",
+    "static/gestures/right.svg": "6d88d1358c95df54ea3f74ab4d9e32c25c77c5dc5d091546e949c22513aa946b",
+    "static/gestures/up.svg": "608b2b47c330a6d0c1c98c8337f68d69aa998b3730b433677b7fa16776d7523d",
+    "static/style.css": "45fbbcd399edfe56a75e5c96720706ce2bb691e79e1e19d6e5ca4cb0c0b42b8a",
+    "templates/index.html": "979c435d90f0a1d8bfeb05ad7200b1fee0ff7f0bff758a97eda23a7abf67ddb8",
+    "test_sensor_model.py": "8707e032ffc81f4951e3cc1cdc3af7535bebf06d68502742f138212d9ceb24d2",
+    "tests/acceptance_probe.py": "5c3f178735ae13f7b2f5e341fd0c4cace1cc1482329b7b7ca7c27c2b3cba3b28",
+    "tests/test_application.py": "850fe6be01c50d4d334efc9fe4df35b43105636df4defdaf2b0e750a10fe8c6d",
+    "tests/test_auth_ui.js": "5be5b1b8555a3e658403fe7e376410caabda4c4243841e4f525df7ebdd97b732",
+    "tests/test_postgres_live.py": "fd82fae70d76dc148224a412247adb938e47e19929e1f274cafc039a9f953d26",
+    "train_real_model.py": "a57c77045fd94d8184a0c2f31d540865646cbf0de1d4a67137e03cb31ffc783a",
+    "train_sensor_model.py": "146c4cf7d424ddf7d1e6464429d60353070288cfcbc4f2fda3ef6919d8bfcaee",
+    "update_sensor_logger_ui.py": "75e306d49616f58303f1e9eb0973bdf1ac1bfcb9b7de160e0f8fecc6c7b3324b"
+  },
+  "retained_originals": {
+    "models/gesture_real_v1.joblib": {
+      "path": "models/baseline_pca/gesture_real_v1.joblib",
+      "sha256": "fd02040384330e95ee15cfd59cf411c30fe9bd526ece3f6c0e7ebf63c0b4a01c"
+    },
+    "models/training_report.json": {
+      "path": "models/baseline_pca/training_report.json",
+      "sha256": "40f1bca66c2d0aca604dd826ae0b8494878c41223ddc45a48c00dbcdb397e51a"
+    },
+    "models/evaluation_split.csv": {
+      "path": "models/baseline_pca/evaluation_split.csv",
+      "sha256": "f02921a42e88db0158ac22bc4b10a27e65b7c2b5fa94d2c2b523f769e89f2d47"
+    }
+  }
+}

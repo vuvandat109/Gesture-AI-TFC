@@ -1,0 +1,20 @@
+{
+  "source_filename": "Sensor logger.zip",
+  "data_sha256": "451c770fedf11b305a8d03ab5cb79140671d23686bcce6242443f0540918e643",
+  "pretraining_samples": 20800,
+  "labeled_samples": 5200,
+  "train_samples": 3120,
+  "validation_samples": 1040,
+  "test_samples": 1040,
+  "array_shape": [
+    178,
+    6
+  ],
+  "csv_npy_spotchecks": 24,
+  "max_spotcheck_error": 2.3612225952263088e-07,
+  "exact_pretrain_heldout_duplicates": 0,
+  "known_ancestor_groups_disjoint": true,
+  "source_limitation": "Augmented/synthetic-derived windows. Original recording/session IDs absent; unknown shared source ancestry cannot be ruled out. Not an independent-person/session evaluation.",
+  "kaggle_url": "https://www.kaggle.com/datasets/vuvandat000099/sensor-logger-dataset",
+  "source_selection": "Original user-provided Sensor logger.zip, retained unchanged."
+}

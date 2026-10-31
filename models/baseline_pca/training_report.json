@@ -1,0 +1,64 @@
+{
+  "model_name": "Sensor Logger PCA + Logistic Regression (6 channels)",
+  "trained_from": "Sensor Logger iPhone: 26,000 processed/augmented windows",
+  "feature_version": "sensor6_v1",
+  "pretraining_samples": 20800,
+  "labeled_samples": 5200,
+  "train_samples": 4160,
+  "test_samples": 1040,
+  "validation_accuracies": {
+    "0.1": 0.5009615384615385,
+    "1.0": 0.49903846153846154,
+    "10.0": 0.4980769230769231
+  },
+  "heldout_test_accuracy": 0.49230769230769234,
+  "heldout_test_macro_f1": 0.49307192335399874,
+  "test_confusion_matrix": [
+    [
+      112,
+      33,
+      19,
+      33,
+      11
+    ],
+    [
+      27,
+      100,
+      39,
+      27,
+      15
+    ],
+    [
+      36,
+      34,
+      89,
+      22,
+      27
+    ],
+    [
+      33,
+      25,
+      30,
+      104,
+      16
+    ],
+    [
+      23,
+      22,
+      28,
+      28,
+      107
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "up",
+    "down",
+    "left",
+    "right",
+    "circle"
+  ],
+  "selected_C": 0.1,
+  "evaluation": "Group split by augmentation ancestor; NOT independent user/session evaluation. Original recording IDs unavailable; cross-partition ancestry cannot be fully verified.",
+  "method": "PCA representation fitted only on 20,800 unlabeled windows; logistic classifier trained only on labeled training groups. Not TF-C or DINOv3.",
+  "data_sha256": "451c770fedf11b305a8d03ab5cb79140671d23686bcce6242443f0540918e643"
+}

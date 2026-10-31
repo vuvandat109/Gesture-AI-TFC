@@ -1,0 +1,77 @@
+{
+  "created_at": "2026-10-31T04:28:06.241104+00:00",
+  "prior_completed_checks": [
+    {
+      "check": "sensor parsing",
+      "passed": true,
+      "tests": 4
+    },
+    {
+      "check": "TF-C objective, batch isolation, normalization and serialization",
+      "passed": true,
+      "tests": 5
+    },
+    {
+      "check": "original authentication JavaScript",
+      "passed": true,
+      "tests": 2
+    }
+  ],
+  "checks": [
+    {
+      "command": [
+        "python",
+        "scripts/verify_tfc_release.py"
+      ],
+      "status": "passed",
+      "exit_code": 0,
+      "output": "PASS: real TF-C checkpoints, SHA-256, 80-epoch log, evaluation and inference model\nTest accuracy=39.6154%; macro-F1=39.7499%; selected epoch=34\nServing model SHA-256: a36678836e674a25dcbd5a5a343e09537610e8bfb1ab26e4f78f37b098c115c0\n"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/verify_preserved_assets.py"
+      ],
+      "status": "passed",
+      "exit_code": 0,
+      "output": "PASS: original Sensor Logger ZIP SHA-256 matches\nPASS: 33 original files unchanged, including all UI assets\n"
+    },
+    {
+      "command": [
+        "python",
+        "tests/test_application.py"
+      ],
+      "status": "passed",
+      "exit_code": 0,
+      "output": "test_F01_register_requires_separate_login (__main__.FunctionalTests.test_F01_register_requires_separate_login)\nRegister valid account -> 201, next=login, no authenticated session. ... ok\ntest_F02_login_success (__main__.FunctionalTests.test_F02_login_success)\nRegister then log in with the same credentials -> authenticated session. ... ok\ntest_F03_duplicate_username (__main__.FunctionalTests.test_F03_duplicate_username)\nRegister the same username twice -> 409. ... ok\ntest_F04_username_boundaries (__main__.FunctionalTests.test_F04_username_boundaries)\nUsername lengths 2/33 rejected; 3/32 accepted. ... ok\ntest_F05_password_boundaries (__main__.FunctionalTests.test_F05_password_boundaries)\nPassword lengths 7/129 rejected; 8/128 accepted. ... ok\ntest_F06_invalid_username (__main__.FunctionalTests.test_F06_invalid_username)\nUsername containing spaces or SQL syntax is rejected. ... ok\ntest_F07_wrong_password (__main__.FunctionalTests.test_F07_wrong_password)\nWrong login password -> 401. ... ok\ntest_F08_csrf_required (__main__.FunctionalTests.test_F08_csrf_required)\nMissing CSRF header -> 403. ... ok\ntest_F09_bad_json (__main__.FunctionalTests.test_F09_bad_json)\nJSON array/null/non-string credentials -> 400 rather than 500. ... ok\ntest_F10_logout (__main__.FunctionalTests.test_F10_logout)\nLogout clears authentication; prediction returns 401. ... ok\ntest_F11_password_is_hashed (__main__.FunctionalTests.test_F11_password_is_hashed)\nStored password is a verifiable hash, never plaintext. ... ok\ntest_F12_persists_across_process_restart (__main__.FunctionalTests.test_F12_persists_across_process_restart)\nA fresh Python process reads the registered hash from the same SQLite file. ... ok\ntest_F13_valid_prediction (__main__.FunctionalTests.test_F13_valid_prediction)\nValid 178x6 CSV -> 200 with five probabilities and finite confidence. ... ok\ntest_F14_no_file (__main__.FunctionalTests.test_F14_no_file)\nAuthenticated upload without file -> 400. ... ok\ntest_F15_bad_extension (__main__.FunctionalTests.test_F15_bad_extension)\nExecutable extension -> 400 without invoking model. ... ok\ntest_F16_empty_file (__main__.FunctionalTests.test_F16_empty_file)\nEmpty CSV -> 400. ... ok\ntest_F17_missing_channels (__main__.FunctionalTests.test_F17_missing_channels)\nCSV missing gyroscope columns -> 400. ... ok\ntest_F18_rows_boundaries (__main__.FunctionalTests.test_F18_rows_boundaries)\n19/10001 rows rejected; 20/10000 rows accepted. ... ok\ntest_F19_nan (__main__.FunctionalTests.test_F19_nan)\nNon-finite sensor value -> 400. ... ok\ntest_F20_upload_over_limit (__main__.FunctionalTests.test_F20_upload_over_limit)\nMultipart request larger than 5 MiB -> 413. ... ok\ntest_F21_invalid_zip (__main__.FunctionalTests.test_F21_invalid_zip)\nInvalid ZIP bytes -> 400. ... ok\ntest_F22_model_unavailable (__main__.FunctionalTests.test_F22_model_unavailable)\nAbsent model -> clear 503 response. ... ok\ntest_F23_database_outage (__main__.FunctionalTests.test_F23_database_outage)\nDatabase outage returns 503 without exposing credentials. ... [2026-10-31 11:28:14,957] ERROR in app: Account storage temporarily unavailable\nok\ntest_F24_storage_configuration (__main__.FunctionalTests.test_F24_storage_configuration)\nHealth reports the actual account storage backend. ... ok\ntest_P01_parameterized_insert (__main__.PostgresAdapterTests.test_P01_parameterized_insert)\nPostgres adapter sends bound parameters and uses connection context transaction. ... ok\ntest_P02_no_silent_sqlite_fallback (__main__.PostgresAdapterTests.test_P02_no_silent_sqlite_fallback)\nA configured PostgreSQL outage must not create a local SQLite database. ... ok\ntest_P03_duplicate (__main__.PostgresAdapterTests.test_P03_duplicate)\nPostgres unique-constraint violation maps to DuplicateUsername. ... ok\n\n----------------------------------------------------------------------\nRan 27 tests in 4.207s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python",
+        "tests/test_tfc_release.py"
+      ],
+      "status": "passed",
+      "exit_code": 0,
+      "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.382s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/verify_dataset_inference.py"
+      ],
+      "status": "passed",
+      "exit_code": 0,
+      "output": "{\n  \"checks\": [\n    {\n      \"sample_id\": \"l_000015\",\n      \"true_key\": \"up\",\n      \"predicted_key\": \"right\",\n      \"http_status\": 200,\n      \"matches_saved_inference\": true\n    },\n    {\n      \"sample_id\": \"l_000010\",\n      \"true_key\": \"down\",\n      \"predicted_key\": \"right\",\n      \"http_status\": 200,\n      \"matches_saved_inference\": true\n    },\n    {\n      \"sample_id\": \"l_000001\",\n      \"true_key\": \"left\",\n      \"predicted_key\": \"left\",\n      \"http_status\": 200,\n      \"matches_saved_inference\": true\n    },\n    {\n      \"sample_id\": \"l_000031\",\n      \"true_key\": \"right\",\n      \"predicted_key\": \"right\",\n      \"http_status\": 200,\n      \"matches_saved_inference\": true\n    },\n    {\n      \"sample_id\": \"l_000007\",\n      \"true_key\": \"circle\",\n      \"predicted_key\": \"circle\",\n      \"http_status\": 200,\n      \"matches_saved_inference\": true\n    }\n  ],\n  \"note\": \"First held-out sample per true class, without selecting correct predictions. This is an integration check, not an accuracy estimate.\"\n}\n"
+    },
+    {
+      "command": [
+        "python",
+        "tests/test_postgres_live.py"
+      ],
+      "status": "skipped",
+      "exit_code": 0,
+      "output": "SKIP: no TEST_DATABASE_URL; live PostgreSQL and cloud persistence unverified.\n"
+    }
+  ],
+  "deployment": "No external service deployed; new GitHub repository is to be created by the user."
+}

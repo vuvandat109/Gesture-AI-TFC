@@ -1,0 +1,12 @@
+Flask>=3.0,<4
+numpy==2.3.5
+pandas==2.2.3
+scikit-learn==1.8.0
+joblib==1.5.3
+gunicorn>=22,<26
+psycopg[binary]>=3.2,<4
+
+# CPU PyTorch on Linux/Windows; native macOS wheel on macOS.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0+cpu; sys_platform != "darwin"
+torch==2.6.0; sys_platform == "darwin"
